@@ -63,7 +63,14 @@ export function useClankerVerification(): UseClankerVerificationReturn {
   const { address: currentUserAddress } = useAccount();
 
   const verifyToken = async (tokenAddress: string, userAddress: Address): Promise<boolean> => {
+    console.log('Starting Clanker token verification:', {
+      tokenAddress,
+      userAddress,
+      chain: publicClient?.chain
+    });
+
     if (!publicClient) {
+      console.error('No public client available');
       setError({
         type: 'NETWORK_ERROR',
         message: 'Network connection error. Please try again.',
@@ -75,21 +82,36 @@ export function useClankerVerification(): UseClankerVerificationReturn {
     setError(null);
 
     try {
+      // Format the token address
+      const formattedTokenAddress = tokenAddress.startsWith('0x') ? tokenAddress : `0x${tokenAddress}`;
+      console.log('Verifying Clanker token:', {
+        tokenAddress: formattedTokenAddress,
+        userAddress,
+        factoryAddress: CLANKER_FACTORY_ADDRESS
+      });
+
       // Get all tokens deployed by the user
       const tokens = await publicClient.readContract({
         address: CLANKER_FACTORY_ADDRESS,
         abi: CLANKER_FACTORY_ABI,
         functionName: "getTokensDeployedByUser",
-        args: [userAddress], // Use the provided userAddress
+        args: [userAddress],
       }) as ClankerToken[];
 
-      console.log("tokens", tokens);
+      console.log("All tokens deployed by user:", tokens);
 
       // Find the matching token
-      const tokenMatch = tokens.find((token) => token.tokenAddress.toLowerCase() === tokenAddress.toLowerCase());
-      console.log("tokenMatch", tokenMatch);
+      const tokenMatch = tokens.find((token) => 
+        token.tokenAddress.toLowerCase() === formattedTokenAddress.toLowerCase()
+      );
+      console.log("Token match result:", {
+        found: !!tokenMatch,
+        searchedAddress: formattedTokenAddress,
+        matchedToken: tokenMatch
+      });
 
       if (!tokenMatch) {
+        console.error('Token not found or user is not the creator');
         setError({
           type: 'NOT_OWNER',
           message: 'You are not the creator of this token. Only the token creator can create a campaign.',
@@ -98,6 +120,11 @@ export function useClankerVerification(): UseClankerVerificationReturn {
       }
 
       const { tokenAddress: address, tokenId, lpLockerAddress } = tokenMatch;
+      console.log('Token verification successful:', {
+        address,
+        tokenId: tokenId.toString(),
+        lpLockerAddress
+      });
 
       setTokenDetails({
         id: tokenId.toString(),

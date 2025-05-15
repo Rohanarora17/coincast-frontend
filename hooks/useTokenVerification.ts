@@ -71,8 +71,9 @@ export const useTokenVerification = () => {
     try {
       const formattedAddress = tokenAddress.startsWith('0x') ? tokenAddress : `0x${tokenAddress}`;
       
-      console.log('Verifying coin with:', {
-        address: formattedAddress,
+      console.log('Starting token verification with:', {
+        tokenAddress: formattedAddress,
+        userAddress,
         chain: base.id
       });
 
@@ -87,6 +88,7 @@ export const useTokenVerification = () => {
       console.log('Coin data:', JSON.stringify(coin, null, 2));
 
       if (!coin) {
+        console.error('Coin not found in response');
         setError({
           type: 'NOT_FOUND',
           message: 'Coin not found. Please check the address and try again.'
@@ -95,10 +97,12 @@ export const useTokenVerification = () => {
       }
 
       // Fetch user profile
+      console.log('Fetching user profile for address:', userAddress);
       const userProfile = await fetchProfile(userAddress);
-      console.log('User profile:', userProfile);
+      console.log('User profile response:', JSON.stringify(userProfile, null, 2));
 
       if (!userProfile) {
+        console.error('User profile not found');
         setError({
           type: 'NOT_OWNER',
           message: 'Could not fetch user profile. Please try again.'
@@ -128,10 +132,12 @@ export const useTokenVerification = () => {
 
       // Check if user is the creator by matching IDs
       const isOwner = userProfile.id === coin.creatorProfile?.id;
-      console.log('Is owner check:', {
+      console.log('Ownership verification:', {
         coinCreatorId: coin.creatorProfile?.id,
         userProfileId: userProfile.id,
-        isOwner
+        isOwner,
+        coinCreatorAddress: coin.creatorAddress,
+        userAddress
       });
 
       if (!isOwner) {
@@ -160,8 +166,9 @@ export const useTokenVerification = () => {
       return true;
     } catch (err) {
       console.error('Error verifying coin:', err);
-      let errorType: VerificationError['type'] = 'UNKNOWN';
+     
       let errorMessage = 'Failed to verify coin';
+      let errorType: VerificationError['type'] = 'UNKNOWN';
 
       if (err instanceof Error) {
         if (err.message.includes('network') || err.message.includes('connection')) {

@@ -5,6 +5,7 @@ import { useDisplayUsdMode } from "~~/hooks/scaffold-eth/useDisplayUsdMode";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { useWatchBalance } from "~~/hooks/scaffold-eth/useWatchBalance";
 import { useGlobalState } from "~~/services/store/store";
+import { CurrencyDollarIcon, ArrowsRightLeftIcon } from "@heroicons/react/24/outline";
 
 type BalanceProps = {
   address?: Address;
@@ -32,19 +33,16 @@ export const Balance = ({ address, className = "", usdMode }: BalanceProps) => {
 
   if (!address || isLoading || balance === null || (isNativeCurrencyPriceFetching && nativeCurrencyPrice === 0)) {
     return (
-      <div className="animate-pulse flex space-x-4">
-        <div className="rounded-md bg-slate-300 h-6 w-6"></div>
-        <div className="flex items-center space-y-6">
-          <div className="h-2 w-28 bg-slate-300 rounded"></div>
-        </div>
+      <div className="animate-pulse flex items-center space-x-2">
+        <div className="rounded-md bg-[#FFFFFF]/10 h-5 w-20"></div>
       </div>
     );
   }
 
   if (isError) {
     return (
-      <div className="border-2 border-base-content/30 rounded-md px-2 flex flex-col items-center max-w-fit cursor-pointer">
-        <div className="text-warning">Error</div>
+      <div className="px-2 py-1 bg-[#FF5C6A]/10 text-[#FF5C6A] text-xs rounded-md flex items-center">
+        <span>Error loading balance</span>
       </div>
     );
   }
@@ -53,23 +51,22 @@ export const Balance = ({ address, className = "", usdMode }: BalanceProps) => {
 
   return (
     <button
-      className={`btn btn-sm btn-ghost flex flex-col font-normal items-center hover:bg-transparent ${className}`}
+      className={`flex items-center px-2 py-1 text-sm rounded-md hover:bg-[#FFFFFF]/5 transition-colors ${className}`}
       onClick={toggleDisplayUsdMode}
       type="button"
     >
-      <div className="w-full flex items-center justify-center">
-        {displayUsdMode ? (
-          <>
-            <span className="text-[0.8em] font-bold mr-1">$</span>
-            <span>{(formattedBalance * nativeCurrencyPrice).toFixed(2)}</span>
-          </>
-        ) : (
-          <>
-            <span>{formattedBalance.toFixed(4)}</span>
-            <span className="text-[0.8em] font-bold ml-1">{targetNetwork.nativeCurrency.symbol}</span>
-          </>
-        )}
-      </div>
+      {displayUsdMode ? (
+        <div className="flex items-center text-[#24E8AD]">
+          <CurrencyDollarIcon className="h-3.5 w-3.5 mr-1" />
+          <span>{(formattedBalance * nativeCurrencyPrice).toFixed(2)}</span>
+        </div>
+      ) : (
+        <div className="flex items-center text-white">
+          <span>{formattedBalance.toFixed(4)}</span>
+          <span className="text-xs ml-1 text-[#FFFFFF]/70">{targetNetwork.nativeCurrency.symbol}</span>
+        </div>
+      )}
+      <ArrowsRightLeftIcon className="h-3 w-3 ml-1 text-[#FFFFFF]/40" />
     </button>
   );
 };

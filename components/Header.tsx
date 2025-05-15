@@ -1,104 +1,132 @@
 "use client";
 
-import React, { useCallback, useRef, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Bars3Icon, Square2StackIcon } from "@heroicons/react/24/outline";
-import { RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
-import { useOutsideClick } from "~~/hooks/scaffold-eth";
+import { useState, useEffect } from "react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { RainbowKitCustomConnectButton } from "./scaffold-eth/RainbowKitCustomConnectButton";
+import { useAccount } from "wagmi";
 
-type HeaderMenuLink = {
+interface NavItem {
+  id: string;
   label: string;
-  href: string;
-};
+  onClick: () => void;
+}
 
-export const menuLinks: HeaderMenuLink[] = [
-  {
-    label: "Home",
-    href: "/",
-  },
-  {
-    label: "How It Works",
-    href: "/how-it-works",
-  },
-];
+interface ResponsiveHeaderProps {
+  navItems?: NavItem[];
+  activeSection?: string;
+  logo?: {
+    text: string;
+    icon?: React.ReactNode;
+  };
+  className?: string;
+  showConnectButton?: boolean;
+}
 
-export const HeaderMenuLinks = () => {
-  const pathname = usePathname();
+const ResponsiveHeader = ({ 
+  navItems = [], 
+  activeSection,
+  logo = { text: "COIN CAST" },
+  className = "",
+  showConnectButton = true
+}: ResponsiveHeaderProps) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isConnected } = useAccount();
 
-  return (
-    <>
-      {menuLinks.map(({ label, href }) => {
-        const isActive = pathname === href;
-        return (
-          <li key={href}>
-            <Link
-              href={href}
-              passHref
-              className={`${
-                isActive ? "text-indigo-600 font-medium" : "text-gray-600"
-              } hover:text-indigo-600 py-1.5 px-3 text-sm`}
-            >
-              <span>{label}</span>
-            </Link>
-          </li>
-        );
-      })}
-    </>
-  );
-};
-
-/**
- * Site header
- */
-export const Header = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const burgerMenuRef = useRef<HTMLDivElement>(null);
-  useOutsideClick(
-    burgerMenuRef,
-    useCallback(() => setIsDrawerOpen(false), []),
-  );
+  // Handle scroll for header styling
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <div className="sticky top-0 z-50 flex items-center justify-between p-4 bg-white/90 backdrop-blur-sm border-b border-gray-100">
-      <div className="flex items-center space-x-2">
-        <Square2StackIcon className="h-6 w-6 text-indigo-600" />
-        <span className="font-bold text-lg sm:text-xl text-gray-800">Token Reward Splitter</span>
-      </div>
-      
-      <div className="flex items-center">
-        <div className="hidden md:flex items-center space-x-4 mr-4">
-          <ul className="flex space-x-2">
-            <HeaderMenuLinks />
-          </ul>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? "bg-[#1A1D2A]/95 backdrop-blur-md shadow-md" : "bg-transparent"
+      } ${className}`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16 md:h-20">
+        {/* Logo */}
+        <div className="flex items-center flex-shrink-0">
+          {logo.icon || (
+            <div className="w-10 h-10 rounded-full bg-[#7B3FEF] flex items-center justify-center">
+              <div className="relative w-5 h-5">
+                <div className="absolute inset-0 border-2 border-white rounded-full"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-[#F8C62B] rounded-full"></div>
+              </div>
+            </div>
+          )}
+          <span className="ml-2 text-xl font-bold tracking-tight text-white">{logo.text}</span>
         </div>
-        
-        <RainbowKitCustomConnectButton />
-        
-        <div className="md:hidden dropdown ml-2" ref={burgerMenuRef}>
-          <label
-            tabIndex={0}
-            className="btn btn-ghost btn-sm"
-            onClick={() => {
-              setIsDrawerOpen(prevIsOpenState => !prevIsOpenState);
-            }}
-          >
-            <Bars3Icon className="h-6 w-6" />
-          </label>
-          {isDrawerOpen && (
-            <ul
-              tabIndex={0}
-              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 right-0"
-              onClick={() => {
-                setIsDrawerOpen(false);
-              }}
+
+        {/* Navigation - Desktop */}
+        {navItems.length > 0 && (
+          <nav className="hidden md:flex items-center justify-center flex-1 mx-8">
+            <div className="flex items-center space-x-8">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={item.onClick}
+                  className={`text-sm font-medium transition-colors ${
+                    activeSection === item.id ? "text-[#7B3FEF]" : "text-white hover:text-[#2A9BF6]"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </nav>
+        )}
+
+        {/* Connect Button and Mobile Menu Toggle */}
+        <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
+          {showConnectButton && (
+            <div className="hidden md:block">
+              <RainbowKitCustomConnectButton text="Connect Wallet" />
+            </div>
+          )}
+          {navItems.length > 0 && (
+            <button
+              className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-[#606677]/20 text-white"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
-              <HeaderMenuLinks />
-            </ul>
+              {isMenuOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
+            </button>
           )}
         </div>
       </div>
-    </div>
+
+      {/* Mobile Menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-[#1A1D2A] px-4 py-4 absolute top-16 left-0 right-0 shadow-lg">
+          <nav className="flex flex-col space-y-4">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  item.onClick();
+                  setIsMenuOpen(false);
+                }}
+                className={`text-sm font-medium text-left transition-colors ${
+                  activeSection === item.id ? "text-[#7B3FEF]" : "text-white hover:text-[#2A9BF6]"
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+            {showConnectButton && (
+              <div className="pt-2 border-t border-[#FFFFFF]/10">
+                <RainbowKitCustomConnectButton text="Connect Wallet" />
+              </div>
+            )}
+          </nav>
+        </div>
+      )}
+    </header>
   );
 };
+
+export default ResponsiveHeader;

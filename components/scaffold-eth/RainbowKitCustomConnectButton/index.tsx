@@ -1,20 +1,17 @@
 "use client";
 
-// @refresh reset
 import { Balance } from "../Balance";
 import { AddressInfoDropdown } from "./AddressInfoDropdown";
 import { AddressQRCodeModal } from "./AddressQRCodeModal";
 import { WrongNetworkDropdown } from "./WrongNetworkDropdown";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { Address } from "~~/node_modules/viem/_types";
+import { ConnectButton, getDefaultWallets } from "@rainbow-me/rainbowkit";
+import { Address } from "viem";
 import { useNetworkColor } from "~~/hooks/scaffold-eth";
 import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
 import { getBlockExplorerAddressLink } from "~~/utils/scaffold-eth";
+import { WalletIcon } from "@heroicons/react/24/outline";
 
-/**
- * Custom Wagmi Connect Button (watch balance + custom design)
- */
-export const RainbowKitCustomConnectButton = () => {
+export const RainbowKitCustomConnectButton = ({ text }: { text: string }) => {
   const networkColor = useNetworkColor();
   const { targetNetwork } = useTargetNetwork();
 
@@ -27,12 +24,18 @@ export const RainbowKitCustomConnectButton = () => {
           : undefined;
 
         return (
-          <>
+          <div className="flex items-center">
             {(() => {
               if (!connected) {
                 return (
-                  <button className="btn btn-primary btn-sm" onClick={openConnectModal} type="button">
-                    Connect Wallet
+                  <button
+                    className="px-3 py-2 sm:px-4 sm:py-2.5 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg flex items-center justify-center transition-colors text-sm sm:text-base min-h-[40px] sm:min-h-[44px] touch-manipulation"
+                    onClick={openConnectModal}
+                    type="button"
+                    aria-label="Connect Wallet"
+                  >
+                    <WalletIcon className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
+                    <span className="truncate">{text}</span>
                   </button>
                 );
               }
@@ -42,10 +45,16 @@ export const RainbowKitCustomConnectButton = () => {
               }
 
               return (
-                <>
-                  <div className="flex flex-col items-center mr-1">
-                    <Balance address={account.address as Address} className="min-h-0 h-auto" />
-                    <span className="text-xs" style={{ color: networkColor }}>
+                <div className="flex items-center space-x-2 sm:space-x-4 flex-wrap">
+                  <div className="flex flex-col items-center min-w-0">
+                    <Balance
+                      address={account.address as Address}
+                      className="min-h-0 h-auto text-white text-sm sm:text-base"
+                    />
+                    <span
+                      className="text-xs sm:text-sm truncate max-w-[120px] sm:max-w-[150px]"
+                      style={{ color: networkColor }}
+                    >
                       {chain.name}
                     </span>
                   </div>
@@ -56,10 +65,10 @@ export const RainbowKitCustomConnectButton = () => {
                     blockExplorerAddressLink={blockExplorerAddressLink}
                   />
                   <AddressQRCodeModal address={account.address as Address} modalId="qrcode-modal" />
-                </>
+                </div>
               );
             })()}
-          </>
+          </div>
         );
       }}
     </ConnectButton.Custom>
