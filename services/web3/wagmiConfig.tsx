@@ -1,6 +1,6 @@
 import { http } from 'viem'; // Import http
 import { base, baseSepolia } from 'viem/chains';
-import { defaultWagmiConfig, createWeb3Modal } from '@web3modal/wagmi/react';
+import { defaultWagmiConfig, createWeb3Modal } from '@web3modal/wagmi';
 
 const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || '';
 

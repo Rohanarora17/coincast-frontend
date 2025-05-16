@@ -27,6 +27,8 @@
     "@zoralabs/coins-sdk": "^0.1.0",
     "@zoralabs/protocol-deployments": "^0.5.4",
     "@zoralabs/protocol-sdk": "^0.13.5",
+    "@web3modal/ethereum": "^2.7.1",
+    "@web3modal/wagmi": "^5.1.11",
     "axios": "^1.9.0",
     "blo": "~1.2.0",
     "burner-connector": "0.0.12",
@@ -65,6 +67,5 @@
     "type-fest": "~4.26.1",
     "typescript": "~5.8.2",
     "vercel": "^41.7.3"
-  },
-  "packageManager": "yarn@3.2.3"
+  }
 }

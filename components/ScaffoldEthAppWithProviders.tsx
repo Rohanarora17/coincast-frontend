@@ -45,7 +45,7 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
   }, []);
 
   return (
-    <WagmiProvider config={wagmiConfig as Config}>
+    <WagmiProvider config={wagmiConfig as unknown as Config}>
       <QueryClientProvider client={queryClient}>
         <ProgressBar height="3px" color="#2299dd" />
         <RainbowKitProvider
