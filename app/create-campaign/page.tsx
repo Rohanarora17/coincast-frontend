@@ -1150,30 +1150,30 @@ const CampaignPage = () => {
     ),
   };
 
-  // Enhanced error modal with animation
+  // Enhanced error modal with animation and better mobile responsiveness
   const ErrorModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fadeIn">
-      <div className="relative max-w-md w-full mx-4">
+    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fadeIn p-4 sm:p-0">
+      <div className="relative w-full max-w-md">
         <div className="absolute -inset-1 bg-gradient-to-r from-[#FF5C6A] to-[#F8C62B] opacity-20 blur rounded-xl"></div>
-        <div className="relative bg-[#24262F] rounded-lg p-6 border border-[#FF5C6A]/20 shadow-xl">
-          <div className="flex justify-between items-center mb-4">
+        <div className="relative bg-[#24262F] rounded-lg p-4 sm:p-6 border border-[#FF5C6A]/20 shadow-xl">
+          <div className="flex justify-between items-center mb-3 sm:mb-4">
             <div className="flex items-center">
-              <div className="w-8 h-8 rounded-full bg-[#FF5C6A]/20 flex items-center justify-center mr-2">
-                <X className="h-4 w-4 text-[#FF5C6A]" />
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#FF5C6A]/20 flex items-center justify-center mr-2">
+                <X className="h-3 w-3 sm:h-4 sm:w-4 text-[#FF5C6A]" />
               </div>
-              <h3 className="text-lg font-semibold text-white">Error</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-white">Error</h3>
             </div>
             <button onClick={() => setShowErrorModal(false)} className="text-[#FFFFFF]/70 hover:text-white">
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
           </div>
-          <div className="bg-[#1A1D2A] p-4 rounded-lg mb-6">
+          <div className="bg-[#1A1D2A] p-3 sm:p-4 rounded-lg mb-4 sm:mb-6 text-sm sm:text-base">
             <p className="text-[#FFFFFF]/90 break-words">{errorMessage || "An unknown error occurred"}</p>
           </div>
           <div className="flex justify-end">
             <button
               onClick={() => setShowErrorModal(false)}
-              className="px-4 py-2 bg-[#FF5C6A] text-white rounded-lg hover:bg-[#FF5C6A]/90 transition-colors"
+              className="px-3 py-1.5 sm:px-4 sm:py-2 bg-[#FF5C6A] text-white rounded-lg hover:bg-[#FF5C6A]/90 transition-colors text-sm sm:text-base"
             >
               Dismiss
             </button>
@@ -1183,30 +1183,30 @@ const CampaignPage = () => {
     </div>
   );
 
-  // Enhanced success modal with animation and icon
+  // Enhanced success modal with animation, icon, and better mobile responsiveness
   const SuccessModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fadeIn">
-      <div className="relative max-w-md w-full mx-4">
+    <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 animate-fadeIn p-4 sm:p-0">
+      <div className="relative w-full max-w-md">
         <div className="absolute -inset-1 bg-gradient-to-r from-[#24E8AD] to-[#2A9BF6] opacity-20 blur rounded-xl"></div>
-        <div className="relative bg-[#24262F] rounded-lg p-6 border border-[#24E8AD]/20 shadow-xl">
-          <div className="flex justify-between items-center mb-6">
+        <div className="relative bg-[#24262F] rounded-lg p-4 sm:p-6 border border-[#24E8AD]/20 shadow-xl">
+          <div className="flex justify-between items-center mb-4 sm:mb-6">
             <div className="flex items-center">
-              <div className="w-8 h-8 rounded-full bg-[#24E8AD]/20 flex items-center justify-center mr-2">
-                <CheckCircle className="h-4 w-4 text-[#24E8AD]" />
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#24E8AD]/20 flex items-center justify-center mr-2">
+                <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 text-[#24E8AD]" />
               </div>
-              <h3 className="text-lg font-semibold text-white">Success!</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-white">Success!</h3>
             </div>
             <button onClick={handleSuccessModalClose} className="text-[#FFFFFF]/70 hover:text-white">
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
           </div>
 
-          <div className="mb-6 text-center py-4">
-            <div className="w-20 h-20 bg-[#24E8AD]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <CheckCircle className="h-10 w-10 text-[#24E8AD]" />
+          <div className="mb-4 sm:mb-6 text-center py-3 sm:py-4">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[#24E8AD]/10 rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4">
+              <CheckCircle className="h-8 w-8 sm:h-10 sm:w-10 text-[#24E8AD]" />
             </div>
-            <h4 className="text-xl font-bold text-white mb-2">Campaign Created!</h4>
-            <p className="text-[#FFFFFF]/80">
+            <h4 className="text-lg sm:text-xl font-bold text-white mb-1 sm:mb-2">Campaign Created!</h4>
+            <p className="text-sm sm:text-base text-[#FFFFFF]/80">
               Your campaign has been created successfully and is now ready to connect with content creators.
             </p>
           </div>
@@ -1214,7 +1214,7 @@ const CampaignPage = () => {
           <div className="flex justify-center">
             <button
               onClick={handleSuccessModalClose}
-              className="px-6 py-3 bg-gradient-to-r from-[#24E8AD] to-[#2A9BF6] text-white rounded-lg hover:shadow-lg hover:shadow-[#24E8AD]/20 transition-all font-medium"
+              className="px-4 py-2 sm:px-6 sm:py-3 bg-gradient-to-r from-[#24E8AD] to-[#2A9BF6] text-white rounded-lg hover:shadow-lg hover:shadow-[#24E8AD]/20 transition-all font-medium text-sm sm:text-base"
             >
               Go to Dashboard
             </button>

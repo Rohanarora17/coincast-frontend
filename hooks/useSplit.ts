@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { SplitV2Client } from '@0xsplits/splits-sdk';
-import { usePublicClient, useWalletClient, useAccount } from 'wagmi';
+import { usePublicClient, useWalletClient, useAccount, useChainId } from 'wagmi';
 import { base } from 'viem/chains';
 import { Address } from 'viem';
 import { SplitV2Type, CreateSplitV2Config, CreateSplitConfig} from '@0xsplits/splits-sdk/types';
@@ -20,13 +20,15 @@ export function useSplit(): UseSplitReturn {
   const publicClient = usePublicClient();
   const { data: walletClient } = useWalletClient();
   const { address: creatorAccount } = useAccount();
+  const chainId = useChainId(); // Get the current chain ID from the connected wallet
 
   const createProtocolSplit = async (budgetPercentage: number, postTokenAddress: Address): Promise<Address | null> => {
     console.log('Starting split creation for post:', postTokenAddress);
     console.log('Split details:', {
       budgetPercentage,
       postTokenAddress,
-      creatorAccount
+      creatorAccount,
+      chainId // Log the chain ID being used
     });
 
     if (!publicClient || !walletClient || !creatorAccount) {
@@ -40,10 +42,10 @@ export function useSplit(): UseSplitReturn {
     setError(null);
 
     try {
-      console.log('Initializing SplitV2Client...');
-      // Setup splits client
+      console.log('Initializing SplitV2Client with chain ID:', chainId);
+      // Setup splits client with the wallet's current chain ID
       const splitsClient = new SplitV2Client({
-        chainId: base.id,
+        chainId, // Use the chain ID from the connected wallet
         publicClient,
         walletClient,
         apiConfig: {
