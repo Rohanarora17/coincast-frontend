@@ -16,6 +16,7 @@ const networkColors: Record<number, string> = {
   420: "bg-[#FF0420]", // Optimism Goerli
   8453: "bg-[#0052FF]", // Base
   84531: "bg-[#0052FF]", // Base Goerli
+  84532: "bg-[#0052FF]", // Base Sepolia
   534353: "bg-[#FF0420]", // Scroll
   534351: "bg-[#FF0420]", // Scroll Sepolia
   1101: "bg-[#8247E5]", // Polygon zkEVM

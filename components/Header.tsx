@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { RainbowKitCustomConnectButton } from "./scaffold-eth/RainbowKitCustomConnectButton";
 import { useAccount } from "wagmi";
+import { useRouter, usePathname } from "next/navigation";
 
 interface NavItem {
   id: string;
@@ -12,26 +13,28 @@ interface NavItem {
 }
 
 interface ResponsiveHeaderProps {
-  navItems?: NavItem[];
-  activeSection?: string;
   logo?: {
     text: string;
     icon?: React.ReactNode;
   };
   className?: string;
   showConnectButton?: boolean;
+  navItems?: NavItem[];
+  activeSection?: string;
 }
 
 const ResponsiveHeader = ({ 
-  navItems = [], 
-  activeSection,
   logo = { text: "COIN CAST" },
   className = "",
-  showConnectButton = true
+  showConnectButton = true,
+  navItems = [],
+  activeSection = ""
 }: ResponsiveHeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isConnected } = useAccount();
+  const router = useRouter();
+  const pathname = usePathname();
 
   // Handle scroll for header styling
   useEffect(() => {
@@ -63,23 +66,21 @@ const ResponsiveHeader = ({
         </div>
 
         {/* Navigation - Desktop */}
-        {navItems.length > 0 && (
-          <nav className="hidden md:flex items-center justify-center flex-1 mx-8">
-            <div className="flex items-center space-x-8">
-              {navItems.map((item) => (
-                <button
-                  key={item.id}
-                  onClick={item.onClick}
-                  className={`text-sm font-medium transition-colors ${
-                    activeSection === item.id ? "text-[#7B3FEF]" : "text-white hover:text-[#2A9BF6]"
-                  }`}
-                >
-                  {item.label}
-                </button>
-              ))}
-            </div>
-          </nav>
-        )}
+        <nav className="hidden md:flex items-center justify-center flex-1 mx-8">
+          <div className="flex items-center space-x-8">
+            {navItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={item.onClick}
+                className={`text-sm font-medium transition-colors ${
+                  activeSection === item.id ? "text-[#7B3FEF]" : "text-white hover:text-[#2A9BF6]"
+                }`}
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </nav>
 
         {/* Connect Button and Mobile Menu Toggle */}
         <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
@@ -88,14 +89,12 @@ const ResponsiveHeader = ({
               <RainbowKitCustomConnectButton text="Connect Wallet" />
             </div>
           )}
-          {navItems.length > 0 && (
-            <button
-              className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-[#606677]/20 text-white"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
-            </button>
-          )}
+          <button
+            className="md:hidden flex items-center justify-center w-10 h-10 rounded-lg hover:bg-[#606677]/20 text-white"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <XMarkIcon className="w-6 h-6" /> : <Bars3Icon className="w-6 h-6" />}
+          </button>
         </div>
       </div>
 

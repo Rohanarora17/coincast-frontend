@@ -1,8 +1,9 @@
 import { defaultWagmiConfig } from '@web3modal/wagmi/react'
-import { base } from "viem/chains";
+import { base, baseSepolia } from "viem/chains";
 import type { Chain } from 'viem';
 
-const targetNetworks = [base] as [Chain, ...Chain[]];
+// Use 'any' type to work around version mismatch
+const targetNetworks = [base, baseSepolia] as any;
 
 const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || "";
 

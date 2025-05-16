@@ -29,22 +29,36 @@ export const ZORA_CREATOR_FACTORY_ADDRESS = zoraCreator1155FactoryImplAddress[ZO
 
 // Types for profile and balances
 export type ZoraProfile = {
-  address?: string;
-  handle?: string;
-  displayName?: string;
-  bio?: string;
-  joinedAt?: string;
-  profileImage?: {
-    small?: string;
-    medium?: string;
+  id: string;
+  handle: string;
+  avatar?: {
+    small: string;
+    medium: string;
     blurhash?: string;
   };
-  linkedWallets?: Array<{
-    type?: string;
-    url?: string;
-  }>;
-  followerCount?: number;
-  followingCount?: number;
+  username: string;
+  displayName?: string;
+  bio: string;
+  website?: string;
+  publicWallet: {
+    walletAddress: string;
+  };
+  socialAccounts: {
+    edges: Array<{
+      node: {
+        type: string;
+        url: string;
+      };
+    }>;
+  };
+  linkedWallets: {
+    edges: Array<{
+      node: {
+        walletType: "PRIVY" | "EXTERNAL" | "SMART_WALLET";
+        walletAddress: string;
+      };
+    }>;
+  };
 };
 
 export type ZoraBalance = {

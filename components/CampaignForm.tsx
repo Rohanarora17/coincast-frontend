@@ -116,7 +116,7 @@ export const CampaignForm = ({ onSubmit }: CampaignFormProps) => {
               </div>
               <DatePicker
                 selected={formData.startDate}
-                onChange={(date: Date) => setFormData({ ...formData, startDate: date })}
+                onChange={(date: Date | null) => setFormData({ ...formData, startDate: date || new Date() })}
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black"
                 minDate={new Date()}
               />
@@ -132,7 +132,7 @@ export const CampaignForm = ({ onSubmit }: CampaignFormProps) => {
               </div>
               <DatePicker
                 selected={formData.endDate}
-                onChange={(date: Date) => setFormData({ ...formData, endDate: date })}
+                onChange={(date: Date | null) => setFormData({ ...formData, endDate: date || new Date() })}
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-black"
                 minDate={formData.startDate}
               />

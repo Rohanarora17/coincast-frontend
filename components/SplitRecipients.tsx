@@ -11,18 +11,16 @@ interface SplitRecipient {
 
 interface SplitRecipientsProps {
   onSplitCreated: (splitAddress: Address) => void;
+  postTokenAddress: Address;
 }
 
-export function SplitRecipients({ onSplitCreated }: SplitRecipientsProps) {
+export function SplitRecipients({ onSplitCreated, postTokenAddress }: SplitRecipientsProps) {
   const [recipients, setRecipients] = useState<SplitRecipient[]>([
     { address: '', percentAllocation: 0 },
   ]);
   const [totalAllocation, setTotalAllocation] = useState(0);
 
-  const { createSplit, isLoading, error } = useSplit({
-    recipients,
-    distributorFeePercent: 0,
-  });
+  const { createProtocolSplit, isLoading, error } = useSplit();
 
   const addRecipient = () => {
     setRecipients([...recipients, { address: '', percentAllocation: 0 }]);
@@ -55,7 +53,7 @@ export function SplitRecipients({ onSplitCreated }: SplitRecipientsProps) {
       return;
     }
 
-    const splitAddress = await createSplit();
+    const splitAddress = await createProtocolSplit(totalAllocation, postTokenAddress);
     if (splitAddress) {
       onSplitCreated(splitAddress);
     }

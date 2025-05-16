@@ -1,5 +1,5 @@
 import { http } from 'viem'; // Import http
-import { base } from 'viem/chains';
+import { base, baseSepolia } from 'viem/chains';
 import { defaultWagmiConfig, createWeb3Modal } from '@web3modal/wagmi/react';
 
 const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || '';
@@ -15,7 +15,9 @@ const metadata = {
   icons: ['https://zora-coin.vercel.app/icon.png'],
 };
 
-const chains = [base] as const;
+// Define the chains we want to support
+// Using type assertion to work around version mismatch
+const chains = [base, baseSepolia] as any;
 
 export const wagmiConfig = defaultWagmiConfig({
   chains,
@@ -23,7 +25,8 @@ export const wagmiConfig = defaultWagmiConfig({
   metadata,
   ssr: true, // Enable server-side rendering
   transports: {
-    [base.id]: http(), // Use public Base RPC or custom URL
+    [base.id]: http() as any,
+    [baseSepolia.id]: http() as any,
   },
   enableWalletConnect: true,
   enableInjected: true,
@@ -34,7 +37,7 @@ export const wagmiConfig = defaultWagmiConfig({
 createWeb3Modal({
   wagmiConfig,
   projectId,
-  chains,
-  defaultChain: base,
+  // Only include properties that are actually supported by the library
+  defaultChain: base as any,
   themeMode: 'dark',
 });

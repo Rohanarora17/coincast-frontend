@@ -17,6 +17,16 @@ interface TokenData {
   tokenURI: string;
 }
 
+// Define the type for getTokenParams to include tokenId
+interface GetTokenParams {
+  publicClient: any;
+  tokenContract: `0x${string}`;
+  mintType: string;
+  chainId: number;
+  chain: typeof base;
+  tokenId?: string;
+}
+
 export function useZoraToken(tokenAddress: string | null, tokenId?: string | null) {
   const publicClient = usePublicClient();
 
@@ -31,7 +41,7 @@ export function useZoraToken(tokenAddress: string | null, tokenId?: string | nul
       try {
         console.log('Fetching token with address:', tokenAddress, 'tokenId:', tokenId);
 
-        const getTokenParams = {
+        const getTokenParams: GetTokenParams = {
           publicClient,
           tokenContract: tokenAddress as `0x${string}`,
           mintType: '1155', // Zora posts are typically ERC-1155

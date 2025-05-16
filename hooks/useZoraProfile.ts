@@ -15,7 +15,7 @@ export type ZoraProfile = {
   bio: string;
   website?: string;
   publicWallet: {
-    address: string;
+    walletAddress: string;
   };
   socialAccounts: {
     edges: Array<{

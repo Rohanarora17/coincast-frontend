@@ -63,15 +63,6 @@ const Home: NextPage = () => {
   return (
     <div className="flex flex-col min-h-screen bg-[#1A1D2A] text-white">
       <ResponsiveHeader 
-        navItems={[
-          { id: "home", label: "Home", onClick: () => scrollToSection("home") },
-          { id: "problem", label: "Problem", onClick: () => scrollToSection("problem") },
-          { id: "solution", label: "Solution", onClick: () => scrollToSection("solution") },
-          { id: "benefits", label: "Benefits", onClick: () => scrollToSection("benefits") },
-          { id: "ecosystem", label: "Ecosystem", onClick: () => scrollToSection("ecosystem") },
-          { id: "faq", label: "FAQ", onClick: () => scrollToSection("faq") }
-        ]}
-        activeSection={activeSection}
         logo={{
           text: "COIN CAST",
           icon: (
@@ -83,6 +74,13 @@ const Home: NextPage = () => {
             </div>
           )
         }}
+        navItems={[
+          { id: "home", label: "Home", onClick: () => router.push("/") },
+          { id: "dashboard", label: "Dashboard", onClick: () => router.push("/dashboard") },
+          { id: "create", label: "Create Campaign", onClick: () => router.push("/create-campaign") },
+          { id: "view-campaigns", label: "View Campaigns", onClick: () => router.push("/view-campaigns") },
+        ]}
+        activeSection="home"
       />
       
       <main>
