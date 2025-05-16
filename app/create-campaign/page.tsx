@@ -933,7 +933,42 @@ const CampaignPage = () => {
             </span>
             <span className="text-[#7B3FEF] font-medium">{rewardPercentage}%</span>
           </div>
-          <div className="mt-1 relative">
+          <div className="mt-1 relative h-8">
+            {/* Track background - static element */}
+            <div 
+              className="absolute w-full h-2 bg-[#1A1D2A] rounded-lg overflow-hidden top-1/2 transform -translate-y-1/2"
+            >
+              {/* Filled portion - moves with the percentage */}
+              <div 
+                className="h-full bg-[#7B3FEF] rounded-lg transition-all" 
+                style={{ width: `${rewardPercentage}%` }}
+              />
+            </div>
+            
+            {/* Stem/connector - moves with the percentage */}
+            <div 
+              className="absolute w-1.5 h-4 bg-[#7B3FEF] rounded-sm pointer-events-none transition-all"
+              style={{ 
+                left: `${rewardPercentage}%`, 
+                top: '50%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 1
+              }}
+            />
+            
+            {/* Thumb circle - moves with the percentage */}
+            <div 
+              className="absolute h-6 w-6 rounded-full bg-[#7B3FEF] hover:ring-4 hover:ring-[#7B3FEF]/30 transition-all border-2 border-white pointer-events-none"
+              style={{ 
+                left: `${rewardPercentage}%`, 
+                top: '50%',
+                transform: 'translate(-50%, -50%)',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.4)',
+                zIndex: 2
+              }}
+            />
+            
+            {/* Actual range input - invisible but captures events */}
             <input
               type="range"
               id="budgetPercentage"
@@ -941,55 +976,50 @@ const CampaignPage = () => {
               max="100"
               value={rewardPercentage}
               onChange={e => setRewardPercentage(parseInt(e.target.value))}
-              className="w-full h-2 bg-[#1A1D2A] rounded-lg appearance-none cursor-pointer accent-[#7B3FEF]"
+              className="absolute w-full h-8 cursor-pointer opacity-0 z-10"
               style={{
-                background: `linear-gradient(to right, #7B3FEF 0%, #7B3FEF ${rewardPercentage}%, #1A1D2A ${rewardPercentage}%, #1A1D2A 100%)`,
-              }}
-            />
-            <div 
-              className="absolute h-5 w-5 rounded-full bg-[#7B3FEF] -mt-1.5 transform -translate-y-1/2 hover:ring-4 hover:ring-[#7B3FEF]/30 transition-all"
-              style={{ 
-                left: `calc(${rewardPercentage}% - 10px)`, 
-                top: '50%',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                top: 0,
+                left: 0
               }}
             />
           </div>
         </div>
-        <div className="flex space-x-2 mt-3">
-          <button
-            type="button"
-            onClick={() => setRewardPercentage(25)}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-              rewardPercentage === 25
-                ? 'bg-[#7B3FEF] text-white'
-                : 'bg-[#FFFFFF]/5 text-[#FFFFFF]/70 hover:bg-[#FFFFFF]/10'
-            }`}
-          >
-            25%
-          </button>
-          <button
-            type="button"
-            onClick={() => setRewardPercentage(50)}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-              rewardPercentage === 50
-                ? 'bg-[#7B3FEF] text-white'
-                : 'bg-[#FFFFFF]/5 text-[#FFFFFF]/70 hover:bg-[#FFFFFF]/10'
-            }`}
-          >
-            50%
-          </button>
-          <button
-            type="button"
-            onClick={() => setRewardPercentage(75)}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-              rewardPercentage === 75
-                ? 'bg-[#7B3FEF] text-white'
-                : 'bg-[#FFFFFF]/5 text-[#FFFFFF]/70 hover:bg-[#FFFFFF]/10'
-            }`}
-          >
-            75%
-          </button>
+        <div className="flex justify-between mt-3">
+          <div className="flex space-x-2">
+            <button
+              type="button"
+              onClick={() => setRewardPercentage(25)}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                rewardPercentage === 25
+                  ? 'bg-[#7B3FEF] text-white'
+                  : 'bg-[#FFFFFF]/5 text-[#FFFFFF]/70 hover:bg-[#FFFFFF]/10'
+              }`}
+            >
+              25%
+            </button>
+            <button
+              type="button"
+              onClick={() => setRewardPercentage(50)}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                rewardPercentage === 50
+                  ? 'bg-[#7B3FEF] text-white'
+                  : 'bg-[#FFFFFF]/5 text-[#FFFFFF]/70 hover:bg-[#FFFFFF]/10'
+              }`}
+            >
+              50%
+            </button>
+            <button
+              type="button"
+              onClick={() => setRewardPercentage(75)}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
+                rewardPercentage === 75
+                  ? 'bg-[#7B3FEF] text-white'
+                  : 'bg-[#FFFFFF]/5 text-[#FFFFFF]/70 hover:bg-[#FFFFFF]/10'
+              }`}
+            >
+              75%
+            </button>
+          </div>
           <button
             type="button"
             onClick={() => setRewardPercentage(100)}
