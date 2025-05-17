@@ -177,7 +177,7 @@ const Home: NextPage = () => {
                     className="px-8 py-3 rounded-lg font-medium bg-[#FFFFFF]/10 hover:bg-[#FFFFFF]/15 border border-[#FFFFFF]/20 text-white transition-all flex items-center justify-center"
                   >
                     <SparklesIcon className="mr-2 h-5 w-5 text-[#F8C62B]" />
-                    View Bounties
+                    View Campaigns
                   </button>
                 </div>
               </div>
